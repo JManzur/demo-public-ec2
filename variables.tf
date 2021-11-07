@@ -22,10 +22,15 @@ variable "aws_ami_id" {
   default = "ami-087c17d1fe0178315"
 }
 
-# Instance size
+#EC2 Instance type
+#Use: instance_type = var.instance_type["type1"]
 variable "instance_type" {
-  type    = string
-  default = "t2.micro"
+  type = map(string)
+  default = {
+    "type1" = "t2.micro"
+    "type2" = "t2.small"
+    "type3" = "t2.medium"
+  }
 }
 
 ### Tags Variables ###

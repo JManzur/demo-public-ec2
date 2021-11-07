@@ -1,7 +1,7 @@
 # Demo EC2 Deploy
 resource "aws_instance" "demo-ec2" {
   ami                         = var.aws_ami_id
-  instance_type               = var.instance_type
+  instance_type               = var.instance_type["type1"]
   subnet_id                   = aws_subnet.demo_public.id
   key_name                    = var.key_name
   vpc_security_group_ids      = [aws_security_group.web_server.id]
