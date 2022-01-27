@@ -1,0 +1,60 @@
+digraph {
+	compound = "true"
+	newrank = "true"
+	subgraph "root" {
+		"[root] aws_eip.nat_gateway (expand)" [label = "aws_eip.nat_gateway", shape = "box"]
+		"[root] aws_instance.demo-ec2 (expand)" [label = "aws_instance.demo-ec2", shape = "box"]
+		"[root] aws_internet_gateway.gw (expand)" [label = "aws_internet_gateway.gw", shape = "box"]
+		"[root] aws_nat_gateway.nat_gateway (expand)" [label = "aws_nat_gateway.nat_gateway", shape = "box"]
+		"[root] aws_route_table.private_route_table (expand)" [label = "aws_route_table.private_route_table", shape = "box"]
+		"[root] aws_route_table.public_route_table (expand)" [label = "aws_route_table.public_route_table", shape = "box"]
+		"[root] aws_route_table_association.private_1 (expand)" [label = "aws_route_table_association.private_1", shape = "box"]
+		"[root] aws_route_table_association.public_1 (expand)" [label = "aws_route_table_association.public_1", shape = "box"]
+		"[root] aws_security_group.web_server (expand)" [label = "aws_security_group.web_server", shape = "box"]
+		"[root] aws_subnet.demo_private (expand)" [label = "aws_subnet.demo_private", shape = "box"]
+		"[root] aws_subnet.demo_public (expand)" [label = "aws_subnet.demo_public", shape = "box"]
+		"[root] aws_vpc.ec2_demo_vpc (expand)" [label = "aws_vpc.ec2_demo_vpc", shape = "box"]
+		"[root] output.ec2_public_ip" [label = "output.ec2_public_ip", shape = "note"]
+		"[root] provider[\"registry.terraform.io/hashicorp/aws\"]" [label = "provider[\"registry.terraform.io/hashicorp/aws\"]", shape = "diamond"]
+		"[root] var.aws_ami_id" [label = "var.aws_ami_id", shape = "note"]
+		"[root] var.aws_region" [label = "var.aws_region", shape = "note"]
+		"[root] var.instance_type" [label = "var.instance_type", shape = "note"]
+		"[root] var.key_name" [label = "var.key_name", shape = "note"]
+		"[root] var.local_ssh_key" [label = "var.local_ssh_key", shape = "note"]
+		"[root] var.project-tags" [label = "var.project-tags", shape = "note"]
+		"[root] var.resource-name-tag" [label = "var.resource-name-tag", shape = "note"]
+		"[root] aws_eip.nat_gateway (expand)" -> "[root] provider[\"registry.terraform.io/hashicorp/aws\"]"
+		"[root] aws_instance.demo-ec2 (expand)" -> "[root] aws_security_group.web_server (expand)"
+		"[root] aws_instance.demo-ec2 (expand)" -> "[root] aws_subnet.demo_public (expand)"
+		"[root] aws_instance.demo-ec2 (expand)" -> "[root] var.aws_ami_id"
+		"[root] aws_instance.demo-ec2 (expand)" -> "[root] var.instance_type"
+		"[root] aws_instance.demo-ec2 (expand)" -> "[root] var.key_name"
+		"[root] aws_instance.demo-ec2 (expand)" -> "[root] var.local_ssh_key"
+		"[root] aws_internet_gateway.gw (expand)" -> "[root] aws_vpc.ec2_demo_vpc (expand)"
+		"[root] aws_nat_gateway.nat_gateway (expand)" -> "[root] aws_eip.nat_gateway (expand)"
+		"[root] aws_nat_gateway.nat_gateway (expand)" -> "[root] aws_subnet.demo_public (expand)"
+		"[root] aws_route_table.private_route_table (expand)" -> "[root] aws_nat_gateway.nat_gateway (expand)"
+		"[root] aws_route_table.public_route_table (expand)" -> "[root] aws_internet_gateway.gw (expand)"
+		"[root] aws_route_table_association.private_1 (expand)" -> "[root] aws_route_table.private_route_table (expand)"
+		"[root] aws_route_table_association.private_1 (expand)" -> "[root] aws_subnet.demo_private (expand)"
+		"[root] aws_route_table_association.public_1 (expand)" -> "[root] aws_route_table.public_route_table (expand)"
+		"[root] aws_route_table_association.public_1 (expand)" -> "[root] aws_subnet.demo_public (expand)"
+		"[root] aws_security_group.web_server (expand)" -> "[root] aws_vpc.ec2_demo_vpc (expand)"
+		"[root] aws_subnet.demo_private (expand)" -> "[root] aws_vpc.ec2_demo_vpc (expand)"
+		"[root] aws_subnet.demo_public (expand)" -> "[root] aws_vpc.ec2_demo_vpc (expand)"
+		"[root] aws_vpc.ec2_demo_vpc (expand)" -> "[root] provider[\"registry.terraform.io/hashicorp/aws\"]"
+		"[root] aws_vpc.ec2_demo_vpc (expand)" -> "[root] var.project-tags"
+		"[root] aws_vpc.ec2_demo_vpc (expand)" -> "[root] var.resource-name-tag"
+		"[root] meta.count-boundary (EachMode fixup)" -> "[root] aws_route_table_association.private_1 (expand)"
+		"[root] meta.count-boundary (EachMode fixup)" -> "[root] aws_route_table_association.public_1 (expand)"
+		"[root] meta.count-boundary (EachMode fixup)" -> "[root] output.ec2_public_ip"
+		"[root] output.ec2_public_ip" -> "[root] aws_instance.demo-ec2 (expand)"
+		"[root] provider[\"registry.terraform.io/hashicorp/aws\"] (close)" -> "[root] aws_instance.demo-ec2 (expand)"
+		"[root] provider[\"registry.terraform.io/hashicorp/aws\"] (close)" -> "[root] aws_route_table_association.private_1 (expand)"
+		"[root] provider[\"registry.terraform.io/hashicorp/aws\"] (close)" -> "[root] aws_route_table_association.public_1 (expand)"
+		"[root] provider[\"registry.terraform.io/hashicorp/aws\"]" -> "[root] var.aws_region"
+		"[root] root" -> "[root] meta.count-boundary (EachMode fixup)"
+		"[root] root" -> "[root] provider[\"registry.terraform.io/hashicorp/aws\"] (close)"
+	}
+}
+

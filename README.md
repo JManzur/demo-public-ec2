@@ -33,9 +33,6 @@ Located in the root directory, make an "aws configure" to log into the aws accou
 aws configure
 terraform init
 ```
-
-## Deployment How-To:
-
 Generate a Key-Pair using AWS-CLI:
 
 ```bash
@@ -55,6 +52,14 @@ mv PublicEC2Demo.pem ~/.ssh/PublicEC2Demo.pem
 ```
 
 >:warning: if you choose a different location, change the variable "local_ssh_key" in the variables.tf file
+
+## Deployment How-To:
+
+Located in the root directory, make the necessary changes in the variables.tf file and run the manifests:
+
+```bash
+terraform apply
+```
 
 ## Debugging / Troubleshooting:
 
