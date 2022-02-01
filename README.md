@@ -16,7 +16,7 @@ Demo of public EC2 running Apache Web Server, very useful to showcase terraform 
 
 ### Deployment diagram:
 
-![App Screenshot](./public-ec2-demo.png)
+![App Screenshot](./images/public-ec2-demo.png)
 
 ## Tested with: 
 
@@ -67,7 +67,7 @@ terraform apply
 
 This manifest output the public IP of EC2, so you just need to copy it:
 
-![App Screenshot](./output-public-ec2-demo.png)
+![App Screenshot](./images/output-public-ec2-demo.png)
 
 >:bulb: As you can see from the screenshot above, it also includes an "SSH echo test" confirmation in the output.
 
