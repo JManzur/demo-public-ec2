@@ -1,22 +1,26 @@
+data "http" "myip" {
+  url = "https://ifconfig.co/"
+}
+
 resource "aws_security_group" "web_server" {
   name        = "web_server"
   description = "SSH and HTTP"
   vpc_id      = aws_vpc.ec2_demo_vpc.id
 
   ingress {
-    description = "SSH from Interney"
+    description = "SSH Form User IP"
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
+    cidr_blocks = ["${chomp(data.http.myip.response_body)}/32"]
   }
 
   ingress {
-    description = "HTTP from Interney"
+    description = "HTTP from User IP"
     from_port   = 80
     to_port     = 80
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
+    cidr_blocks = ["${chomp(data.http.myip.response_body)}/32"]
   }
 
   egress {
@@ -28,5 +32,5 @@ resource "aws_security_group" "web_server" {
     ipv6_cidr_blocks = ["::/0"]
   }
 
-  tags = merge(var.project-tags, { Name = "${var.resource-name-tag}-sg" }, )
+  tags = { Name = "${var.name_prefix}-sg" }
 }

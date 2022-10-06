@@ -1,6 +1,17 @@
+#Grabbing latest Linux 2 AMI
+data "aws_ami" "linux2" {
+  most_recent = true
+  owners      = ["amazon"]
+
+  filter {
+    name   = "name"
+    values = ["amzn2-ami-hvm*"]
+  }
+}
+
 # Demo EC2 Deploy
 resource "aws_instance" "demo-ec2" {
-  ami                         = var.aws_ami_id
+  ami                         = data.aws_ami.linux2.id
   instance_type               = var.instance_type["type1"]
   subnet_id                   = aws_subnet.demo_public.id
   key_name                    = var.key_name
@@ -18,13 +29,13 @@ resource "aws_instance" "demo-ec2" {
   systemctl enable httpd
   EOF
 
-  tags = merge(var.project-tags, { Name = "${var.resource-name-tag}-ec2" }, )
+  tags = { Name = "${var.name_prefix}-ec2" }
 
   root_block_device {
     volume_size           = 8
     volume_type           = "gp2"
     delete_on_termination = true
-    tags                  = merge(var.project-tags, { Name = "${var.resource-name-tag}-ebs" }, )
+    tags                  = { Name = "${var.name_prefix}-ebs" }
   }
 
   provisioner "remote-exec" {
@@ -37,8 +48,4 @@ resource "aws_instance" "demo-ec2" {
       host        = aws_instance.demo-ec2.public_ip
     }
   }
-}
-
-output "ec2_public_ip" {
-  value = aws_instance.demo-ec2.public_ip
 }

@@ -1,25 +1,20 @@
 # AWS Region: North of Virginia
 variable "aws_region" {
-  type    = string
-  default = "us-east-1"
+  type = string
+}
+
+variable "aws_profile" {
+  type = string
 }
 
 # SSH Key-Pair 
 variable "key_name" {
-  type    = string
-  default = "PublicEC2Demo"
+  type = string
 }
 
 # SSH Key-Pair local file
 variable "local_ssh_key" {
-  type    = string
-  default = "~/.ssh/PublicEC2Demo.pem"
-}
-
-# AMI: AWS Linux 2
-variable "aws_ami_id" {
-  type    = string
-  default = "ami-087c17d1fe0178315"
+  type = string
 }
 
 #EC2 Instance type
@@ -33,18 +28,18 @@ variable "instance_type" {
   }
 }
 
-### Tags Variables ###
-
+/* Tags Variables */
+#Use: tags = merge(var.project-tags, { Name = "${var.resource-name-tag}-place-holder" }, )
 variable "project-tags" {
   type = map(string)
   default = {
-    service     = "Public-EC2-Demo",
-    environment = "demo"
-    owner       = "example@mail.com"
+    service     = "Demo EC2",
+    environment = "POC",
+    DeployedBy  = "JManzur - https://jmanzur.com/"
   }
 }
 
-variable "resource-name-tag" {
-  type    = string
-  default = "Public-EC2-Demo"
+#Use: tags = { Name = "${var.name_prefix}-lambda" }
+variable "name_prefix" {
+  type = string
 }

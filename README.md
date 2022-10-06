@@ -1,7 +1,7 @@
 
 # Classic "Training Course" public EC2 Demo.
 
-Demo of public EC2 running Apache Web Server, very useful to showcase terraform capabilities in a training session.
+Demo of a public EC2 instance running Apache Web Server, very useful to showcase terraform capabilities in a training session.
 
 ## Resources deployed by this manifest:
 
@@ -22,24 +22,18 @@ Demo of public EC2 running Apache Web Server, very useful to showcase terraform 
 
 | Environment | Application | Version  |
 | ----------------- |-----------|---------|
-| WSL2 Ubuntu 20.04 | Terraform | v1.0.10 |
-| WSL2 Ubuntu 20.04 | AWS-CLI | 2.2.12 |
+| WSL2 Ubuntu 20.04 | Terraform | v1.3.1 |
+| WSL2 Ubuntu 20.04 | AWS-CLI | 2.7.29 |
 
 ## Initialization How-To:
 
-Located in the root directory, make an "aws configure" to log into the aws account, and a "terraform init" to download the necessary modules and start the backend.
-
-```bash
-aws configure
-terraform init
-```
 Generate a Key-Pair using AWS-CLI:
 
 ```bash
 aws ec2 create-key-pair --key-name PublicEC2Demo --query 'KeyMaterial' --output text > PublicEC2Demo.pem
 ```
 
->:warning: if you use a different key name, change the variable "key_name" in the variables.tf file
+>:warning: if you use a different key name, change the variable "key_name" in the `variables.tf` file
 
 Change permissions:
 ```bash
@@ -51,7 +45,23 @@ Move to home folder:
 mv PublicEC2Demo.pem ~/.ssh/PublicEC2Demo.pem
 ```
 
->:warning: if you choose a different location, change the variable "local_ssh_key" in the variables.tf file
+>:warning: if you choose a different location, change the variable "local_ssh_key" in the `variables.tf` file
+
+Located in the root directory, create a file called `default.auto.tfvars` with a content like the following:
+
+```bash
+aws_profile   = "default"
+aws_region    = "us-east-1"
+name_prefix   = "POC"
+key_name      = "some_key"
+local_ssh_key = "~/.ssh/some_key.pem"
+```
+
+Initialice the direcotry to download the necessary modules and start the backend.
+
+```bash
+terraform init
+```
 
 ## Deployment How-To:
 
