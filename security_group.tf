@@ -17,8 +17,8 @@ resource "aws_security_group" "web_server" {
 
   ingress {
     description = "HTTP from User IP"
-    from_port   = 80
-    to_port     = 80
+    from_port   = 8888
+    to_port     = 8888
     protocol    = "tcp"
     cidr_blocks = ["${chomp(data.http.myip.response_body)}/32"]
   }

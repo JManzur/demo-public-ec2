@@ -22,11 +22,15 @@ resource "aws_instance" "demo-ec2" {
   #!/bin/bash
   yum update -y
   yum install httpd -y
-  sleep 10
-  echo "<html><h1>Hellow Word from $(hostname -f)</h1></html>" >> /var/www/html/index.html
-  sleep 5
+  mv /etc/httpd/conf.d/welcome.conf /etc/httpd/conf.d/welcome.conf.bkp
+  touch /var/www/html/index.html
+  touch /var/www/html/status.json
+  echo '{"InstanceID": "'"$(hostname -f)"'", "StatusCode": 200}' > /var/www/html/status.json
+  echo "<html><h1>Hello Word from $(hostname -f)</h1></html>" > /var/www/html/index.html
+  sed -i 's/Listen 80/Listen 8888/g' /etc/httpd/conf/httpd.conf 
   systemctl start httpd
   systemctl enable httpd
+  chkconfig httpd on
   EOF
 
   tags = { Name = "${var.name_prefix}-ec2" }
@@ -48,4 +52,22 @@ resource "aws_instance" "demo-ec2" {
       host        = aws_instance.demo-ec2.public_ip
     }
   }
+}
+
+data "aws_region" "current" {}
+
+# Conditional naming using region validation:
+resource "aws_iam_policy" "name" {
+  name = data.aws_region.current.name == var.main_region ? "DEMO-Policy-Main" : "DEMO-Policy-DR"
+}
+
+# Conditional naming using a suffix variable:
+resource "aws_iam_policy" "name" {
+  name = "DEMO-Policy-${var.naming_sufix}"
+}
+
+# Conditional deployment using `count` and region validation:
+resource "aws_iam_policy" "name" {
+  count = data.aws_region.current.name == var.main_region ? 1 : 0
+  name = "DEMO-Policy"
 }
